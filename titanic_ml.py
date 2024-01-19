@@ -1,14 +1,16 @@
+import tensorflow as tf
+from tensorflow import keras
+import matplotlib.pyplot as plt
+
 def tf_regression(mat, output_shape = 1, rate=1e-5, loss_func='mse', metric='mean_absolute_percentage_error'):
     model = keras.Sequential([
-        keras.layers.ZeroPadding1D(2, input_shape=mat[0].shape),
-        keras.layers.LocallyConnected1D(128, 4, data_format='channels_last'),
-        keras.layers.LocallyConnected1D(64, 5, data_format='channels_last'),
-        keras.layers.GlobalAveragePooling1D(),
-        keras.layers.Dense(512, activation='elu'),
+        keras.layers.Dense(256, input_shape=mat[0].shape),
         keras.layers.BatchNormalization(),
-        keras.layers.Dense(256, activation='elu'),
+        keras.layers.Dense(512, activation='relu'),
         keras.layers.BatchNormalization(),
-        keras.layers.Dense(output_shape, activation='exponential')
+        keras.layers.Dense(256, activation='relu'),
+        keras.layers.BatchNormalization(),
+        keras.layers.Dense(output_shape, activation='sigmoid')
         ])
     opt = tf.keras.optimizers.Adam(learning_rate=rate)
     model.compile(optimizer=opt, loss=loss_func, metrics=[metric])
