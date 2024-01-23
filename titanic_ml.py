@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-def tf_regression(mat, output_shape = 1, rate=1e-5, loss_func='mse', metric='mean_absolute_percentage_error'):
+def tf_regression(mat, output_shape = 1, rate=1e-5, loss_func='binary_crossentropy', metric='binary_accuracy'):
     model = keras.Sequential([
         keras.layers.Dense(256, input_shape=mat[0].shape),
         keras.layers.BatchNormalization(),
@@ -23,7 +23,7 @@ def plot_metric(history, metric='loss'):
     plt.legend()
     plt.show()
 
-def recompile(loc, rate=1e-5, loss_func='mse', metric='mean_absolute_percentage_error'):
+def recompile(loc, rate=1e-5, loss_func='binary_crossentropy', metric='binary_accuracy'):
     model = tf.keras.models.load_model(loc, compile=False)
     opt = tf.keras.optimizers.Adam(learning_rate=rate)
     model.compile(optimizer=opt, loss=loss_func, metrics=[metric])
